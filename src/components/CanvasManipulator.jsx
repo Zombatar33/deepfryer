@@ -144,7 +144,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
 
         applyFilter();
         return () => cancelAnimationFrame(animationFrame);
-    }, [contrast, brightness, invert, saturation, noise, sharpen, hue]);
+    }, [contrast, brightness, invert, saturation, noise, sharpen, hue, canvasRef, videoRef]);
 
     return (
         <div>
