@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 
 function AudioManipulator({ videoRef }) {
 
-    const [_bitReduction, setBitReduction] = useState(7);
-    const [_bitcrushNormFrequency, setBitcrushNormFrequency] = useState(0.2);
-    const [_distortion, setDistortion] = useState(100);
-    const [_bassBoost, setBassBoost] = useState(20);
+    const [_bitSamples, setBitSamples] = useState(16);
+    const [_bitcrushNormFrequency, setBitcrushNormFrequency] = useState(1);
+    const [_distortion, setDistortion] = useState(0);
+    const [_bassBoost, setBassBoost] = useState(0);
     const [_gain, setGain] = useState(1);
 
     function handleResetClick() {
-        setBitReduction(7);
-        setBitcrushNormFrequency(0.7);
+        setBitSamples(0);
+        setBitcrushNormFrequency(1);
         setDistortion(0);
-        setBassBoost(1);
+        setBassBoost(0);
         setGain(1);
     }
 
@@ -33,7 +33,7 @@ function AudioManipulator({ videoRef }) {
         var bufferSize = 4096;
         var bitcrush = (function () {
             var node = context.createScriptProcessor(bufferSize, 1, 1);
-            node.bits = _bitReduction; // between 1 and 16
+            node.bits = _bitSamples; // between 1 and 16
             node.normfreq = _bitcrushNormFrequency; // between 0.0 and 1.0
             var step = Math.pow(1 / 2, node.bits);
             var phaser = 0;
@@ -92,7 +92,7 @@ function AudioManipulator({ videoRef }) {
         return () => {
             video.onplay = null;
         }
-    }, [_bassBoost, _bitReduction, _bitcrushNormFrequency, _distortion, _gain, context, videoRef]);
+    }, [_bassBoost, _bitSamples, _bitcrushNormFrequency, _distortion, _gain, context, videoRef]);
 
 //TODO: implement user control for audio filters
 
