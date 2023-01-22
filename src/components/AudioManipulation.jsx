@@ -25,7 +25,12 @@ function AudioManipulator({ videoRef }) {
     useEffect(() => {
         const video = videoRef.current;
         video.onplay = handlePlay;
+        return () => {
+          video.onplay = null;
+        }
+      }, []);
 
+    useEffect(() => {
         const videoElement = videoRef.current;
         const audioSource = context.createMediaElementSource(videoElement);
 
@@ -88,10 +93,6 @@ function AudioManipulator({ videoRef }) {
             }
             return curve;
         };
-
-        return () => {
-            video.onplay = null;
-        }
     }, [_bassBoost, _bitSamples, _bitcrushNormFrequency, _distortion, _gain, context, videoRef]);
 
 //TODO: implement user control for audio filters
