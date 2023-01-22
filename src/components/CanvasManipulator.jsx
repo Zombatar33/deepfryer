@@ -108,7 +108,6 @@ function CanvasManipulator({ canvasRef, videoRef }) {
                     r = 0;
                     g = 0;
                     b = 0;
-                    a = 0;
                     if (x > 0 && y > 0 && x < w - 1 && y < h - 1) {
                         for (cy = 0; cy < katet; cy++) {
                             for (cx = 0; cx < katet; cx++) {
