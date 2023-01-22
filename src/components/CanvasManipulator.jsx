@@ -87,7 +87,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             ctx.putImageData(imageData, 0, 0);;
 
             // sharpen
-            var x, sx, sy, r, g, b, a, dstOff, srcOff, wt, cx, cy, scy, scx;
+            var x, sx, sy, r, g, b, dstOff, srcOff, wt, cx, cy, scy, scx;
             var w = width;
             var h = height;
             var mix = sharpen;
