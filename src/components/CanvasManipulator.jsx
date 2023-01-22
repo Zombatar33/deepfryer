@@ -92,17 +92,17 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             <label>Invert</label>
             <input type="checkbox" checked={invert} onChange={e => setInvert(e.target.checked)} />
             <label>Brightness</label>
-            <input type="range" min="-100" max="100" value={brightness} onChange={e => setBrightness(e.target.value)} />
+            <input type="range" min="-100" max="100" step="0.1" value={brightness} onChange={e => setBrightness(e.target.value)} />
             <label>Contrast</label>
-            <input type="range" min="-100" max="100" value={contrast} onChange={e => setContrast(e.target.value)} />
+            <input type="range" min="0" max="5" step="1" value={contrast} onChange={e => setContrast(e.target.value)} />
             <label>Noise</label>
-            <input type="range" min="0" max="100" value={noise} onChange={e => setNoise(e.target.value)} />
+            <input type="range" min="0" max="100" step="0.1" value={noise} onChange={e => setNoise(e.target.value)} />
             <label>Saturation</label>
-            <input type="range" min="0" max="100" value={saturation} onChange={e => setSaturation(e.target.value)} />
+            <input type="range" min="0" max="100" step="0.1" value={saturation} onChange={e => setSaturation(e.target.value)} />
             <label>Sharpen</label>
-            <input type="range" min="0" max="10" value={sharpen} onChange={e => setSharpen(e.target.value)} />
+            <input type="range" min="0" max="10" step="0.1" value={sharpen} onChange={e => setSharpen(e.target.value)} />
             <label>Hue</label>
-            <input type="range" min="0" max="360" value={hue} onChange={e => setHue(e.target.value)} />
+            <input type="range" min="0" max="360" step="0.1" value={hue} onChange={e => setHue(e.target.value)} />
             <label>Reset</label>
             <input type="button" value="Reset" onClick={(handleResetClick)}></input>
         </div>
