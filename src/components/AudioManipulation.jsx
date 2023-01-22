@@ -1,6 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function AudioManipulator({ videoRef }) {
+
+    
+    const [_bitReduction, setBitReduction] = useState(0);
+    const [_bitcrushNormFrequency, setBitcrushNormFrequency] = useState(0);
+    const [_distortion, setDistortion] = useState(0);
+    const [_bassBoost, setBassBoost] = useState(0);
+    const [_gain, setGain] = useState(1);
+
+    function handleResetClick() {
+        setBitReduction(0);
+        setBitcrushNormFrequency(0);
+        setDistortion(0);
+        setBassBoost(0);
+        setGain(1);
+    }
 
     const context = new AudioContext();
 
