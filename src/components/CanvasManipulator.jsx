@@ -162,15 +162,11 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             <input type="range" min="0" max="10" step="0.1" value={sharpen} onChange={e => setSharpen(e.target.value)} />
             <label>Hue</label>
             <input type="range" min="0" max="360" step="0.1" value={hue} onChange={e => setHue(e.target.value)} />
-            <label>Reset</label>
+            <label>Reset Image FX</label>
             <input type="button" value="Reset" onClick={(handleResetClick)}></input>
         </div>
 
     );
-}
-
-const sharpenImage = (ctx, w, h, mix) => {
-
 }
 
 export default CanvasManipulator

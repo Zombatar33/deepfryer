@@ -86,9 +86,19 @@ function AudioManipulator({ videoRef }) {
 
     return (
         <div>
-            
+            <label>Bitcrush Bit-Reduction</label>
+            <input type="range" min="0" max="16" step="1"/>
+            <label>Bitcrush Norm.-Frequency</label>
+            <input type="range" min="0" max="1" step="0.01"/>
+            <label>Distortion</label>
+            <input type="range" min="0" max="100" step="0.1"/>
+            <label>Bass Boost</label>
+            <input type="range" min="0" max="100" step="1"/>
+            <label>Gain</label>
+            <input type="range" min="0" max="10" step="0.01"/>
+            <label>Reset Sound FX</label>
+            <input type="button" value="Reset"></input>
         </div>
-
     );
 }
 
