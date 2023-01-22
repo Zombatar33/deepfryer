@@ -1,9 +1,9 @@
+import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 
 function AudioManipulator({ videoRef }) {
-
-    const [_bitSamples, setBitSamples] = useState(16);
-    const [_bitcrushNormFrequency, setBitcrushNormFrequency] = useState(1);
+    var [_bitSamples, setBitSamples] = useState(7);
+    const [_bitcrushNormFrequency, setBitcrushNormFrequency] = useState(0.2);
     const [_distortion, setDistortion] = useState(0);
     const [_bassBoost, setBassBoost] = useState(0);
     const [_gain, setGain] = useState(1);
@@ -100,7 +100,7 @@ function AudioManipulator({ videoRef }) {
     return (
         <div>
             <label>Bitcrush Bit-Reduction</label>
-            <input type="range" min="0" max="16" step="1"/>
+            <input type="range" min="0" max="16" step="1" value={_bitSamples} onChange={e => {setBitSamples(e.target.value)}}/>
             <label>Bitcrush Norm.-Frequency</label>
             <input type="range" min="0" max="1" step="0.01"/>
             <label>Distortion</label>
@@ -110,7 +110,7 @@ function AudioManipulator({ videoRef }) {
             <label>Gain</label>
             <input type="range" min="0" max="10" step="0.01"/>
             <label>Reset Sound FX</label>
-            <input type="button" value="Reset"></input>
+            <input type="button" value="Reset" onClick={(handleResetClick)}></input>
         </div>
     );
 }
