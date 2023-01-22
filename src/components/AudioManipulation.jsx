@@ -2,18 +2,17 @@ import { useEffect, useState } from 'react';
 
 function AudioManipulator({ videoRef }) {
 
-    
-    const [_bitReduction, setBitReduction] = useState(0);
-    const [_bitcrushNormFrequency, setBitcrushNormFrequency] = useState(0);
-    const [_distortion, setDistortion] = useState(0);
-    const [_bassBoost, setBassBoost] = useState(0);
+    const [_bitReduction, setBitReduction] = useState(7);
+    const [_bitcrushNormFrequency, setBitcrushNormFrequency] = useState(0.2);
+    const [_distortion, setDistortion] = useState(100);
+    const [_bassBoost, setBassBoost] = useState(20);
     const [_gain, setGain] = useState(1);
 
     function handleResetClick() {
-        setBitReduction(0);
-        setBitcrushNormFrequency(0);
+        setBitReduction(7);
+        setBitcrushNormFrequency(0.7);
         setDistortion(0);
-        setBassBoost(0);
+        setBassBoost(1);
         setGain(1);
     }
 
@@ -26,12 +25,6 @@ function AudioManipulator({ videoRef }) {
     useEffect(() => {
         const video = videoRef.current;
         video.onplay = handlePlay;
-        return () => {
-          video.onplay = null;
-        }
-      }, []);
-
-    useEffect(() => {
 
         const videoElement = videoRef.current;
         const audioSource = context.createMediaElementSource(videoElement);
@@ -40,8 +33,8 @@ function AudioManipulator({ videoRef }) {
         var bufferSize = 4096;
         var bitcrush = (function () {
             var node = context.createScriptProcessor(bufferSize, 1, 1);
-            node.bits = 7; // between 1 and 16
-            node.normfreq = 0.2; // between 0.0 and 1.0
+            node.bits = _bitReduction; // between 1 and 16
+            node.normfreq = _bitcrushNormFrequency; // between 0.0 and 1.0
             var step = Math.pow(1 / 2, node.bits);
             var phaser = 0;
             var last = 0;
@@ -63,17 +56,17 @@ function AudioManipulator({ videoRef }) {
         // create distortion
         var dist = context.createWaveShaper();
         // 0 bis 100 funktioniert sehr gut, ist aber egal
-        dist.curve = makeDistortionCurve(100);
+        dist.curve = makeDistortionCurve(_distortion);
 
         // create filter
         var filter = context.createBiquadFilter();
         filter.type = "lowshelf";
         filter.frequency.value = 200;
-        filter.gain.value = 20;
+        filter.gain.value = _bassBoost;
 
         // gain
         var gain = context.createGain();
-        gain.gain.value = 1;
+        gain.gain.value = _gain;
 
         // chain effects - first effect in chain is actually last
         audioSource.connect(gain);
@@ -95,7 +88,11 @@ function AudioManipulator({ videoRef }) {
             }
             return curve;
         };
-    }, []);
+
+        return () => {
+            video.onplay = null;
+        }
+    }, [_bassBoost, _bitReduction, _bitcrushNormFrequency, _distortion, _gain, context, videoRef]);
 
 //TODO: implement user control for audio filters
 
