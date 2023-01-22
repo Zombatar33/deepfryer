@@ -17,7 +17,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
     const [saturation, setSaturation] = useState(10);
     const [noise, setNoise] = useState(0);
     const [hue, setHue] = useState(0);
-    const [sharpen, setSharpen] = useState(1);
+    const [sharpen, setSharpen] = useState(0);
 
     function handleResetClick() {
         setBrightness(0);
@@ -26,6 +26,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
         setSaturation(10);
         setNoise(0);
         setHue(0);
+        setSharpen(0);
     }
 
     useEffect(() => {
@@ -36,8 +37,10 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             animationFrame = requestAnimationFrame(applyFilter);
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
-            ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const width = canvas.width;
+            const height = canvas.height;
+            ctx.drawImage(videoRef.current, 0, 0, width, height);
+            const imageData = ctx.getImageData(0, 0, width, height);
             const data = imageData.data;
 
             const brightnessFactor = brightness / 100;
@@ -80,7 +83,63 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             }
            
             ctx.filter = `hue-rotate(${hue}deg)`;
-            ctx.putImageData(imageData, 0, 0);
+
+            ctx.putImageData(imageData, 0, 0);;
+
+            // sharpen
+            var x, sx, sy, r, g, b, a, dstOff, srcOff, wt, cx, cy, scy, scx;
+            var w = width;
+            var h = height;
+            var mix = sharpen;
+            var weights = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+            var katet = Math.round(Math.sqrt(weights.length));
+            var half = (katet * 0.5) | 0;
+            var dstData = ctx.createImageData(w, h);
+            var dstBuff = dstData.data;
+            var srcBuff = ctx.getImageData(0, 0, w, h).data;
+            var y = h;
+
+            while (y--) {
+                x = w;
+                while (x--) {
+                    sy = y;
+                    sx = x;
+                    dstOff = (y * w + x) * 4;
+                    r = 0;
+                    g = 0;
+                    b = 0;
+                    a = 0;
+                    if (x > 0 && y > 0 && x < w - 1 && y < h - 1) {
+                        for (cy = 0; cy < katet; cy++) {
+                            for (cx = 0; cx < katet; cx++) {
+                                scy = sy + cy - half;
+                                scx = sx + cx - half;
+        
+                                if (scy >= 0 && scy < h && scx >= 0 && scx < w) {
+                                    srcOff = (scy * w + scx) * 4;
+                                    wt = weights[cy * katet + cx];
+        
+                                    r += srcBuff[srcOff] * wt;
+                                    g += srcBuff[srcOff + 1] * wt;
+                                    b += srcBuff[srcOff + 2] * wt;
+                                }
+                            }
+                        }
+        
+                        dstBuff[dstOff] = r * mix + srcBuff[dstOff] * (1 - mix);
+                        dstBuff[dstOff + 1] = g * mix + srcBuff[dstOff + 1] * (1 - mix);
+                        dstBuff[dstOff + 2] = b * mix + srcBuff[dstOff + 2] * (1 - mix);
+                        dstBuff[dstOff + 3] = srcBuff[dstOff + 3];
+                    } else {
+                        dstBuff[dstOff] = srcBuff[dstOff];
+                        dstBuff[dstOff + 1] = srcBuff[dstOff + 1];
+                        dstBuff[dstOff + 2] = srcBuff[dstOff + 2];
+                        dstBuff[dstOff + 3] = srcBuff[dstOff + 3];
+                    }
+                }
+            }
+    
+        ctx.putImageData(dstData, 0, 0);
         };
 
         applyFilter();
@@ -108,6 +167,10 @@ function CanvasManipulator({ canvasRef, videoRef }) {
         </div>
 
     );
+}
+
+const sharpenImage = (ctx, w, h, mix) => {
+
 }
 
 export default CanvasManipulator
