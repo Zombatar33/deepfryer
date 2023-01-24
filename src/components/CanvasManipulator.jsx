@@ -36,7 +36,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             //Setup
             animationFrame = requestAnimationFrame(applyFilter);
             const canvas = canvasRef.current;
-            const ctx = canvas.getContext("2d");
+            const ctx = canvas.getContext("2d", {willReadFrequently: true});
             const width = canvas.width;
             const height = canvas.height;
             ctx.drawImage(videoRef.current, 0, 0, width, height);
