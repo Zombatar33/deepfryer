@@ -1,18 +1,32 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import CanvasManipulator from "./CanvasManipulator";
 import AudioManipulator from "./AudioManipulation";
 
-function VideoPlayer() {
+function VideoPlayer({ video }) {
 
     const videoRef = useRef(null);
     const canvasRef = useRef(null)
+    let prevVideo = useRef(null);
+
+    useEffect(() => {
+        if (prevVideo.current) {
+            URL.revokeObjectURL(prevVideo.current);
+        }
+        prevVideo.current = video;
+    }, [video]);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.src = URL.createObjectURL(video);
+        }
+    }, [video]);
     
     return (
         <div className="VideoPlayer">
             Original:
             <br></br>
             <video id="my-video" controls={true} width="480" height="270" crossOrigin="anonymous" ref={videoRef}>
-                <source src="https://jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v" type="video/mp4" />
+            <source src={URL.createObjectURL(video)} type={video.type} />
             </video>
             <br></br>
             Processed:

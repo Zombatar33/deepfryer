@@ -1,8 +1,11 @@
 import VideoPlayer from "./components/VideoPlayer";
+import VideoUploader from "./components/VideoUploader";
 
 function App() {
   return (
-    <VideoPlayer/>
+    <div>
+      <VideoUploader />
+    </div>
   );
 }
 
