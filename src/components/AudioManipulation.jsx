@@ -125,13 +125,13 @@ function AudioManipulator({ videoRef }) {
             <label>Bitcrush Bit-Reduction</label>
             <input type="range" min="0" max="16" step="1" value={_bitSamples} onChange={e => {setBitSamples(e.target.value)}}/>
             <label>Bitcrush Norm.-Frequency</label>
-            <input type="range" min="0" max="1" step="0.01"/>
+            <input type="range" min="0" max="1" step="0.01" value={_bitcrushNormFrequency} onChange={e => {setBitcrushNormFrequency(e.target.value)}}/>
             <label>Distortion</label>
-            <input type="range" min="0" max="100" step="0.1"/>
+            <input type="range" min="0" max="100" step="0.1" value={_distortion} onChange={e => {setDistortion(e.target.value)}}/>
             <label>Bass Boost</label>
-            <input type="range" min="0" max="100" step="1"/>
+            <input type="range" min="0" max="100" step="1" value={_bassBoost} onChange={e => {setBassBoost(e.target.value)}}/>
             <label>Gain</label>
-            <input type="range" min="0" max="10" step="0.01"/>
+            <input type="range" min="0" max="10" step="0.01" value={_gain} onChange={e => {setGain(e.target.value)}}/>
             <label>Reset Sound FX</label>
             <input type="button" value="Reset" onClick={(handleResetClick)}></input>
         </div>
