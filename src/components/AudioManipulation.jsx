@@ -11,17 +11,18 @@ function AudioManipulator({ videoRef }) {
     const effectBassBoostContainer = useRef(null);
     const effectGainContainer = useRef(null);
 
-    const [_bitSamples, setBitSamples] = useState(7);
-    const [_normFrequency, setNormFrequency] = useState(0.1);
+    const [_bitSamples, setBitSamples] = useState(2);
+    const [_normFrequency, setNormFrequency] = useState(1);
     const [_distortion, setDistortion] = useState(0);
     const [_bassBoost, setBassBoost] = useState(0);
     const [_gain, setGain] = useState(5);
 
     function handleResetClick() {
-        setBitSamples(0);
+        setBitSamples(2);
+        setNormFrequency(1)
         setDistortion(0);
         setBassBoost(0);
-        setGain(1);
+        setGain(5);
     }
 
     function handlePlay() {
@@ -155,6 +156,9 @@ function AudioManipulator({ videoRef }) {
         };
     }, [_bassBoost, _bitSamples, _normFrequency, _distortion, _gain]);
 
+    // TODO: MAKE FUNCTION FOR EACH VALUE UPDATE
+    // TODO: CREATE CONTROL CHECKBOX FOR ENABLING/DISABLING FX
+    // TODO: REPLACE BITCRUSH-NORM-FREQUENCY WITH A CHECKBOX
     return (
         <div>
             <label>Bitcrush Bit-Reduction</label>
