@@ -26,16 +26,19 @@ function VideoUploader() {
     }
 
     return (
-        <div 
-            className={`drop-zone ${isDragOver ? 'drag-over' : ''}`}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-        >
-            <input type="file" accept="video/*" onChange={handleFileUpload} />
-            {selectedFile ? 
-                <VideoPlayer video={selectedFile} /> 
-                : <p>Drop video here or click to upload</p>}
+        <div>
+            <div 
+                className={`drop-zone ${isDragOver ? 'drag-over' : ''}`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+            >
+                <input type="file" accept="video/*" onChange={handleFileUpload} />
+            </div>
+
+            <div>            
+                {selectedFile ? <VideoPlayer video={selectedFile} /> 
+            :   <p>Please upload a video</p>}</div>
         </div>
     );
 }
