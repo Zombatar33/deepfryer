@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import VideoPlayer from './VideoPlayer';
 import "../css/App.css"
 
+/**
+ * Handles custom video upload
+ * @returns the element
+ */
 function VideoUploader() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [isDragOver, setIsDragOver] = useState(false);
@@ -37,7 +41,7 @@ function VideoUploader() {
                 ,
                 <div key="video">            
                     {selectedFile ? <VideoPlayer video={selectedFile} /> 
-                :   <p>Please upload a video</p>}</div>
+                :   <p className="upload-text">Please upload a video</p>}</div>
         ]
     );
 }

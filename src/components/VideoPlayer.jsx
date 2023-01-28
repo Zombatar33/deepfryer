@@ -3,8 +3,12 @@ import { Helmet } from 'react-helmet';
 import CanvasManipulator from "./CanvasManipulator";
 import AudioManipulator from "./AudioManipulation";
 
+/**
+ * Element for video playback
+ * @param {*} _ videoReference 
+ * @returns the element
+ */
 function VideoPlayer({ video }) {
-
     const videoRef = useRef(null);
     const canvasRef = useRef(null)
     let prevVideo = useRef(null);
@@ -15,7 +19,6 @@ function VideoPlayer({ video }) {
         }
         prevVideo.current = video;
     }, [video]);
-
 
 
     useEffect(() => {
@@ -44,6 +47,8 @@ function VideoPlayer({ video }) {
                     <CanvasManipulator canvasRef={canvasRef} videoRef={videoRef}></CanvasManipulator>
                     <AudioManipulator videoRef={videoRef}></AudioManipulator>
                     <div className="authors">
+                        <p>Deepfryer v1.0</p>
+                        <br></br>
                         <p>Adam Ebied, s0577868@htw-berlin.de</p>
                         <p>Sebastian Gomoll, s0578431@htw-berlin.de</p>
                         <p>Alexander Mai, s0579081@htw-berlin.de</p>
@@ -53,14 +58,15 @@ function VideoPlayer({ video }) {
                 <Helmet>
                     <script type="text/javascript">
                         {`
+                            // this part is really hacky, but is neccessary to adjust the canvas height, else it defaults to 300x150
                             var v = document.getElementById('video');
                             v.addEventListener("loadedmetadata", function (e) {
                                 var width = this.getBoundingClientRect().width,
                                     height = this.getBoundingClientRect().height;
 
                                 var c = document.getElementById('canvas');
-                                c.width = width;
-                                c.height = height;
+                                c.width = width * 1;
+                                c.height = height * 1;
                             }, false);
                         `}
                     </script>

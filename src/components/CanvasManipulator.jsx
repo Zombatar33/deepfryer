@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+// truncates color, used for contrast
 function truncateColor(value) {
     if (value < 0) {
         value = 0;
@@ -9,8 +10,13 @@ function truncateColor(value) {
     return value;
 }
 
+/**
+ * CanvasManipulator element, responsible for handling VFX
+ * @param {*} _ canvas and video reference
+ * @returns the element
+ */
 function CanvasManipulator({ canvasRef, videoRef }) {
-
+    // Settings for effects
     const [brightness, setBrightness] = useState(0);
     const [contrast, setContrast] = useState(0);
     const [invert, setInvert] = useState(false);
@@ -19,6 +25,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
     const [hue, setHue] = useState(0);
     const [sharpen, setSharpen] = useState(0);
 
+    // Reset effect settings to default
     function handleResetClick() {
         setBrightness(0);
         setContrast(0);
@@ -94,6 +101,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
         applyFilter();
         return () => cancelAnimationFrame(animationFrame);
 
+        // sharpenImage function costs a lot of performance
         function sharpenImage(ctx, width, height) {
             // sharpen
             var x, sx, sy, r, g, b, dstOff, srcOff, wt, cx, cy, scy, scx;

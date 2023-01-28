@@ -1,22 +1,33 @@
 import { useEffect, useState, useRef } from 'react';
 
+/**
+ * AudioManipulator element, responsible for handling SFX
+ * @param {*} _ video reference 
+ * @returns the element
+ */
 function AudioManipulator({ videoRef }) {
+    // buffer size results in slight delay; can't be helped...
+    const bufferSize = 4096;
 
+    // Container for Web-Audio-API elements
     const audioCtxContainer = useRef(null);
     const audioSrcContainer = useRef(null);
     const audioScriptContainer = useRef(null)
 
+    // Containers for effects
     const effectBitcrushContainer = useRef(null);
     const effectDistortionContainer = useRef(null);
     const effectBassBoostContainer = useRef(null);
     const effectGainContainer = useRef(null);
 
+    // Settings for effects
     const [_bitSamples, setBitSamples] = useState(-1);
     const [_normFrequency, setNormFrequency] = useState(true);
     const [_distortion, setDistortion] = useState(0);
     const [_bassBoost, setBassBoost] = useState(0);
     const [_gain, setGain] = useState(5);
 
+    // Reset effect settings to default
     function handleResetClick() {
         setBitSamples(-1);
         setNormFrequency(true)
@@ -38,39 +49,55 @@ function AudioManipulator({ videoRef }) {
         }
       }, []);
 
-      // Create Effects and Audio-API
+    // Create effects and ready Audio-API
     useEffect(() => {
+        // Create AudioContext
         if (!audioCtxContainer.current) {
             audioCtxContainer.current = new AudioContext();
         }
+
+        // Create AudioSource
         if (!audioSrcContainer.current) {
             audioSrcContainer.current = audioCtxContainer.current.createMediaElementSource(videoRef.current);
         }
+
+        // Create ScriptProcessor for Bitcrush
         if (!audioScriptContainer.current) {
-            var bufferSize = 4096;
             audioScriptContainer.current = audioCtxContainer.current.createScriptProcessor(bufferSize, 1, 1);
         }
 
+        // Create Bitcrush
         if (!effectBitcrushContainer.current) {
             var normFrequency = _normFrequency ? 1 : 0.1;
             effectBitcrushContainer.current = createBitCrush(_bitSamples, normFrequency)();
         }
+
+        // Create Distortion
         if (!effectDistortionContainer.current) {
             effectDistortionContainer.current = audioCtxContainer.current.createWaveShaper();
         }
+
+        // Create Bass Boost (it's a simple lowshelf EQ)
         if (!effectBassBoostContainer.current) {
             effectBassBoostContainer.current = audioCtxContainer.current.createBiquadFilter();
             effectBassBoostContainer.current.type = "lowshelf";
             effectBassBoostContainer.current.frequency.value = 200;
         }
+
+        // Create Gain
         if (!effectGainContainer.current) {
             effectGainContainer.current = audioCtxContainer.current.createGain();
         }
     }, []);
 
+    /**
+     * (Re-)Create the bitcrush effect; else the parameters can't be changed
+     * @param {*} paramSamples Bit-Reduction
+     * @param {*} paramNormFrequency Phaser-Step value
+     * @returns a Bit-Crush effect node
+     */
     function createBitCrush(paramSamples, paramNormFrequency) {
         return (function () {
-            var bufferSize = 4096;
             var node = audioScriptContainer.current;
             var bits = 16 - paramSamples; // between 0 and 15
             var normfreq = paramNormFrequency; // between 0.0 and 1.0
@@ -104,23 +131,14 @@ function AudioManipulator({ videoRef }) {
     }, []);
 
     // Update FX-Parameters
+    // it would be a lot more optimal  to update the values when only moving the sliders, this resulted in a weird behaviour with the bit-crush though
+    // where the program would just freeze; so instead of splitting it into two parts, we decided to keep the parameter-updating code in a useEffect hook
     useEffect(() => {
-        // soll nur ein mal ausgeführt werden
-        // nur ein mal effekte erstellen und connecten (nicht disconnecten)
-
-        // firefox -> webaudioeditor
-        // chrome -> audion
-        // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Tools
-
-        // use effect kann weg
-
-
-        //bitcrush
-        // TODO: CHANGE BITCRUSH SAMPLES
+        //bitcrush - parameters are constrained because html sliders are weird.
         var constrainedBitSamples = _bitSamples;
         if (constrainedBitSamples < 0) { constrainedBitSamples = 0 }
         if (constrainedBitSamples > 15) { constrainedBitSamples = 15 }
-    
+
         var normFrequency = _normFrequency ? 1 : 0.1;
         effectBitcrushContainer.current = createBitCrush(constrainedBitSamples, normFrequency)();
 
@@ -134,10 +152,12 @@ function AudioManipulator({ videoRef }) {
         effectBassBoostContainer.current.gain.value = _bassBoost;
 
         // Change Gain
-        // Logarithmic scale for easier usabilit<; the middle is loudness = 1 (unchanged)
+        // Cubic scale for easier usability; the center of the slider is loudness = 1 (unchanged)
         var logGain = 0.008 * Math.pow(_gain, 3);
         effectGainContainer.current.gain.value = logGain;
 
+        // recalculate distortion curve
+        // it would be a lot more optimized to pre-calculate the distortion curves and save them in an array, then change it depending on the users liking
         function makeDistortionCurve(amount) {
             var k = amount,
                 n_samples = 44100,
