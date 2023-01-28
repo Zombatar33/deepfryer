@@ -11,15 +11,15 @@ function AudioManipulator({ videoRef }) {
     const effectBassBoostContainer = useRef(null);
     const effectGainContainer = useRef(null);
 
-    const [_bitSamples, setBitSamples] = useState(2);
-    const [_normFrequency, setNormFrequency] = useState(1);
+    const [_bitSamples, setBitSamples] = useState(-1);
+    const [_normFrequency, setNormFrequency] = useState(true);
     const [_distortion, setDistortion] = useState(0);
     const [_bassBoost, setBassBoost] = useState(0);
     const [_gain, setGain] = useState(5);
 
     function handleResetClick() {
-        setBitSamples(2);
-        setNormFrequency(1)
+        setBitSamples(-1);
+        setNormFrequency(true)
         setDistortion(0);
         setBassBoost(0);
         setGain(5);
@@ -52,7 +52,8 @@ function AudioManipulator({ videoRef }) {
         }
 
         if (!effectBitcrushContainer.current) {
-            effectBitcrushContainer.current = createBitCrush(_bitSamples, _normFrequency)();
+            var normFrequency = _normFrequency ? 1 : 0.1;
+            effectBitcrushContainer.current = createBitCrush(_bitSamples, normFrequency)();
         }
         if (!effectDistortionContainer.current) {
             effectDistortionContainer.current = audioCtxContainer.current.createWaveShaper();
@@ -117,14 +118,11 @@ function AudioManipulator({ videoRef }) {
         //bitcrush
         // TODO: CHANGE BITCRUSH SAMPLES
         var constrainedBitSamples = _bitSamples;
-        if (constrainedBitSamples < 2) { constrainedBitSamples = 2 }
+        if (constrainedBitSamples < 0) { constrainedBitSamples = 0 }
         if (constrainedBitSamples > 15) { constrainedBitSamples = 15 }
     
-        var constrainedNormFrequency = _normFrequency;
-        if (constrainedNormFrequency < 0.1) { constrainedNormFrequency = 0.1 }
-        if (constrainedNormFrequency > 1) { constrainedNormFrequency = 1 }
-
-        effectBitcrushContainer.current = createBitCrush(constrainedBitSamples, constrainedNormFrequency)();
+        var normFrequency = _normFrequency ? 1 : 0.1;
+        effectBitcrushContainer.current = createBitCrush(constrainedBitSamples, normFrequency)();
 
         // Change distortion curve, 0 - 100
         var constrainedDistortion = _distortion;
@@ -155,20 +153,17 @@ function AudioManipulator({ videoRef }) {
         };
     }, [_bassBoost, _bitSamples, _normFrequency, _distortion, _gain]);
 
-    // TODO: MAKE FUNCTION FOR EACH VALUE UPDATE
-    // TODO: CREATE CONTROL CHECKBOX FOR ENABLING/DISABLING FX
-    // TODO: REPLACE BITCRUSH-NORM-FREQUENCY WITH A CHECKBOX
     return (
         <div className="audio-manipulation-sliders">
             <h1>SFX</h1>
             <div className='control-element'>
                 <label className='control-element-label'>Bitcrush</label>
-                <input className='control-element-input' type="range" min="1" max="16" step="1" value={_bitSamples} onChange={e => {setBitSamples(e.target.value)}}/>
+                <input className='control-element-input' type="range" min="-1" max="16" step="1" value={_bitSamples} onChange={e => {setBitSamples(e.target.value)}}/>
             </div>
 
             <div className='control-element'>
-                <label className='control-element-label'>Bitcrush Strength</label>
-                <input className='control-element-input' type="range" min="0" max="1" step="1" value={_normFrequency} onChange={e => {setNormFrequency(e.target.value)}}/>
+                <label className='control-element-label'>Squeeze Mode</label>
+                <input className='control-element-input' type="checkbox" checked={_normFrequency} onChange={e => {setNormFrequency(e.target.checked)}}/>
             </div>
 
             <div className='control-element'>

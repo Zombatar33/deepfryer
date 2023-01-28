@@ -22,11 +22,29 @@ body {
     height: 100vw;
 }
 
-.video-player {
+.screens {
     flex-grow: 1;
     height: 100vw;
     align-items: center;
     justify-content: center;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.video-player {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18%;
+}
+
+.video-canvas {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18%;
 }
 
 .control-element {

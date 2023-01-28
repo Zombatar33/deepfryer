@@ -37,8 +37,10 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             animationFrame = requestAnimationFrame(applyFilter);
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d", {willReadFrequently: true});
+            
             const width = canvas.width;
             const height = canvas.height;
+
             ctx.drawImage(videoRef.current, 0, 0, width, height);
             const imageData = ctx.getImageData(0, 0, width, height);
             const data = imageData.data;
@@ -81,11 +83,18 @@ function CanvasManipulator({ canvasRef, videoRef }) {
                 data[i + 2] = (b - max) * saturationFactor + max;
 
             }
-           
+            
             ctx.filter = `hue-rotate(${hue}deg)`;
-
             ctx.putImageData(imageData, 0, 0);;
 
+            // sharpen
+            sharpenImage(ctx, width, height)
+        };
+
+        applyFilter();
+        return () => cancelAnimationFrame(animationFrame);
+
+        function sharpenImage(ctx, width, height) {
             // sharpen
             var x, sx, sy, r, g, b, dstOff, srcOff, wt, cx, cy, scy, scx;
             var w = width;
@@ -98,7 +107,7 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             var dstBuff = dstData.data;
             var srcBuff = ctx.getImageData(0, 0, w, h).data;
             var y = h;
-
+    
             while (y--) {
                 x = w;
                 while (x--) {
@@ -138,11 +147,8 @@ function CanvasManipulator({ canvasRef, videoRef }) {
                 }
             }
     
-        ctx.putImageData(dstData, 0, 0);
-        };
-
-        applyFilter();
-        return () => cancelAnimationFrame(animationFrame);
+            ctx.putImageData(dstData, 0, 0);
+        }
     }, [contrast, brightness, invert, saturation, noise, sharpen, hue, canvasRef, videoRef]);
 
     return (
