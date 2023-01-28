@@ -73,7 +73,6 @@ function AudioManipulator({ videoRef }) {
             var node = audioScriptContainer.current;
             var bits = 16 - paramSamples; // between 0 and 15
             var normfreq = paramNormFrequency; // between 0.0 and 1.0
-            console.log(paramNormFrequency + " - " + normfreq);
             var step = Math.pow(1 / 2, bits);
             var phaser = 0;
             var last = 0;
@@ -160,24 +159,37 @@ function AudioManipulator({ videoRef }) {
     // TODO: CREATE CONTROL CHECKBOX FOR ENABLING/DISABLING FX
     // TODO: REPLACE BITCRUSH-NORM-FREQUENCY WITH A CHECKBOX
     return (
-        <div>
-            <label>Bitcrush Bit-Reduction</label>
-            <input type="range" min="1" max="16" step="1" value={_bitSamples} onChange={e => {setBitSamples(e.target.value)}}/>
+        <div className="audio-manipulation-sliders">
+            <h1>SFX</h1>
+            <div className='control-element'>
+                <label className='control-element-label'>Bitcrush</label>
+                <input className='control-element-input' type="range" min="1" max="16" step="1" value={_bitSamples} onChange={e => {setBitSamples(e.target.value)}}/>
+            </div>
 
-            <label>Bitcrush Norm-Frequency</label>
-            <input type="range" min="0" max="1" step="1" value={_normFrequency} onChange={e => {setNormFrequency(e.target.value)}}/>
+            <div className='control-element'>
+                <label className='control-element-label'>Bitcrush Strength</label>
+                <input className='control-element-input' type="range" min="0" max="1" step="1" value={_normFrequency} onChange={e => {setNormFrequency(e.target.value)}}/>
+            </div>
 
-            <label>Distortion</label>
-            <input type="range" min="-0.25" max="30.25" step="0.25" value={_distortion} onChange={e => {setDistortion(e.target.value)}}/>
+            <div className='control-element'>
+                <label className='control-element-label'>Distortion</label>
+                <input className='control-element-input' type="range" min="-0.25" max="30.25" step="0.25" value={_distortion} onChange={e => {setDistortion(e.target.value)}}/>
+            </div>
 
-            <label>Bass Boost</label>
-            <input type="range" min="0" max="100" step="1" value={_bassBoost} onChange={e => {setBassBoost(e.target.value)}}/>
+            <div className='control-element'>
+                <label className='control-element-label'>Bass Boost</label>
+                <input className='control-element-input' type="range" min="0" max="100" step="1" value={_bassBoost} onChange={e => {setBassBoost(e.target.value)}}/>
+            </div>
 
-            <label>Gain</label>
-            <input type="range" min="0" max="10" step="0.01" value={_gain} onChange={e => {setGain(e.target.value)}}/>
+            <div className='control-element'>
+                <label className='control-element-label'>Gain</label>
+                <input className='control-element-input' type="range" min="0" max="10" step="0.01" value={_gain} onChange={e => {setGain(e.target.value)}}/>
+            </div>
 
-            <label>Reset Sound FX</label>
-            <input type="button" value="Reset" onClick={(handleResetClick)}></input>
+            <div className='control-element'>
+                <label>Reset Sound FX</label>
+                <input className='control-element-input' type="button" value="Reset" onClick={(handleResetClick)}></input>
+            </div>
         </div>
     );
 }

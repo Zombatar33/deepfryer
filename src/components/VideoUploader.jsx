@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import VideoPlayer from './VideoPlayer';
-import "../css/VideoUploader.css"
+import "../css/App.css"
 
 function VideoUploader() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -26,20 +26,19 @@ function VideoUploader() {
     }
 
     return (
-        <div>
-            <div 
-                className={`drop-zone ${isDragOver ? 'drag-over' : ''}`}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-            >
-                <input type="file" accept="video/*" onChange={handleFileUpload} />
-            </div>
+        [
+                <div key="drag-and-drop" className={`drag-and-drop__drop-zone ${isDragOver ? 'drag-and-drop__drag-over' : ''}`}
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}>
 
-            <div>            
-                {selectedFile ? <VideoPlayer video={selectedFile} /> 
-            :   <p>Please upload a video</p>}</div>
-        </div>
+                    <input type="file" accept="video/*" onChange={handleFileUpload} />
+                </div>
+                ,
+                <div key="video">            
+                    {selectedFile ? <VideoPlayer video={selectedFile} /> 
+                :   <p>Please upload a video</p>}</div>
+        ]
     );
 }
 
