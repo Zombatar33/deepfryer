@@ -47,7 +47,7 @@ function VideoPlayer({ video }) {
                     <CanvasManipulator canvasRef={canvasRef} videoRef={videoRef}></CanvasManipulator>
                     <AudioManipulator videoRef={videoRef}></AudioManipulator>
                     <div className="authors">
-                        <p>Deepfryer v1.0</p>
+                        <p>Deep Fryer v1.0</p>
                         <br></br>
                         <p>Adam Ebied, s0577868@htw-berlin.de</p>
                         <p>Sebastian Gomoll, s0578431@htw-berlin.de</p>
