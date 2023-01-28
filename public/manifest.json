@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Deep Fryer",
+  "name": "A real-time deep fryer for video clips",
   "icons": [
     {
       "src": "favicon.ico",

@@ -1,0 +1,105 @@
+:root {
+    --background-color: rgb(5, 11, 25);
+    --background-color-accent: rgb(6, 17, 41);
+    --font-color: rgb(244, 244, 244);
+
+    background-color: var(--background-color);
+}
+
+body {
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0px;
+    overflow: hidden;
+
+    font-family: 'Rubik';
+    color: var(--font-color);
+}
+
+.video-controls {
+    display: flex;
+    height: 100vw;
+}
+
+.screens {
+    flex-grow: 1;
+    height: 100vw;
+    align-items: center;
+    justify-content: center;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.video-player {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18%;
+}
+
+.video-canvas {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18%;
+}
+
+.control-element {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    padding: 0rem 1rem 1rem 0rem;
+}
+
+.authors {
+    font-size: 11px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    padding-right: 1rem;
+    padding-bottom: 0.3rem;
+}
+
+.control-element-label {
+    justify-content: left;
+}
+
+.control-element-input {
+    margin-left: auto;
+    flex-basis: 50%;
+}
+
+.upload-text {
+    position: fixed;
+    /* or absolute */
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 3rem;
+    padding-bottom: 6%;
+}
+
+.controls {
+    flex-basis: calc(100% / 4);
+    background-color: var(--background-color-accent);
+    padding-left: 1rem;
+}
+
+.drag-and-drop__drop-zone {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    transition: border .2s ease-in-out;
+}
+
+.drag-and-drop__drag-over {
+    border-color: #6c757d;
+    background-color: rgba(108, 117, 125, 0.1);
+}
