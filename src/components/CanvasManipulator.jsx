@@ -188,13 +188,13 @@ function CanvasManipulator({ canvasRef, videoRef }) {
             </div>
 
             <div className='control-element'>
-                <label className='control-element-label'>Sharpen</label>
-                <input className='control-element-input' type="range" min="0" max="10" step="0.1" value={sharpen} onChange={e => setSharpen(e.target.value)} />
+                <label className='control-element-label'>Hue</label>
+                <input className='control-element-input' type="range" min="0" max="360" step="0.1" value={hue} onChange={e => setHue(e.target.value)} />
             </div>
 
             <div className='control-element'>
-                <label className='control-element-label'>Hue</label>
-                <input className='control-element-input' type="range" min="0" max="360" step="0.1" value={hue} onChange={e => setHue(e.target.value)} />
+                <label className='control-element-label'>Sharpen</label>
+                <input className='control-element-input' type="range" min="0" max="10" step="0.1" value={sharpen} onChange={e => setSharpen(e.target.value)} />
             </div>
 
             <div className='control-element'>
